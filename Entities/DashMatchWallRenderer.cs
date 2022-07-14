@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Celeste.Mod.TetraHelper.Entities
 {
-    //[Tracked(false)]
+    [Tracked(true)]
     public class DashMatchWallRenderer : Entity
     {
         private class Edge
@@ -32,7 +32,9 @@ namespace Celeste.Mod.TetraHelper.Entities
 
             public float Length;
 
-            public Edge(DashMatchWall parent, Vector2 a, Vector2 b)
+            public Color col;
+
+            public Edge(DashMatchWall parent, Vector2 a, Vector2 b, Color col)
             {
                 Parent = parent;
                 Visible = true;
@@ -227,7 +229,7 @@ namespace Celeste.Mod.TetraHelper.Entities
                                     }
                                     Vector2 a = new Vector2(point3.X, point3.Y) * 8f + value - item.Position;
                                     Vector2 b = new Vector2(point4.X, point4.Y) * 8f + value - item.Position;
-                                    edges.Add(new Edge(item, a, b));
+                                    edges.Add(new Edge(item, a, b, item.ParticleColor));
                                 }
                             }
                         }
@@ -249,7 +251,7 @@ namespace Celeste.Mod.TetraHelper.Entities
             {
                 if (item.Visible)
                 {
-                    Draw.Rect(item.X, item.Y, item.Width, item.Height, Color.Purple);
+                    Draw.Rect(item.X, item.Y, item.Width, item.Height, item.ParticleColor);
                 }
             }
             foreach (Edge edge in edges)
@@ -261,7 +263,7 @@ namespace Celeste.Mod.TetraHelper.Entities
                     for (int i = 0; i <= edge.Length; i++)
                     {
                         Vector2 vector = value + edge.Normal * i;
-                        Draw.Line(vector, vector + edge.Perpendicular * edge.Wave[i], Color.Purple);
+                        Draw.Line(vector, vector + edge.Perpendicular * edge.Wave[i], edge.col);
                     }
                 }
             }
@@ -271,13 +273,13 @@ namespace Celeste.Mod.TetraHelper.Entities
         {
             if (list.Count > 0)
             {
-                Color color = Color.Purple * 0.65f;
-                Color value = Color.Purple * 0.75f;
+                Color color = Color.White * 0.65f;
+                Color value = Color.White * 0.75f;
                 foreach (DashMatchWall item in list)
                 {
                     if (item.Visible)
                     {
-                        Draw.Rect(item.Collider, color);
+                        Draw.Rect(item.Collider, item.ParticleColor * 0.12f);
                     }
                 }
                 if (edges.Count > 0)
@@ -288,11 +290,11 @@ namespace Celeste.Mod.TetraHelper.Entities
                         {
                             Vector2 value2 = edge.Parent.Position + edge.A;
                             Vector2 vector2 = edge.Parent.Position + edge.B;
-                            Color.Lerp(value, Color.Purple, edge.Parent.Flash);
+                            Color.Lerp(value, edge.col * 0.12f, edge.Parent.Flash);
                             for (int i = 0; i <= edge.Length; i++)
                             {
                                 Vector2 vector = value2 + edge.Normal * i;
-                                Draw.Line(vector, vector + edge.Perpendicular * edge.Wave[i], color);
+                                Draw.Line(vector, vector + edge.Perpendicular * edge.Wave[i], edge.col * 0.12f);
                             }
                         }
                     }

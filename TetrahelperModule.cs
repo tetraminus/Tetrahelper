@@ -1,4 +1,5 @@
 ﻿using System;
+using Celeste.Mod.TetraHelper.Entities;
 using Microsoft.Xna.Framework;
 
 namespace Celeste.Mod.Tetrahelper {
@@ -16,11 +17,11 @@ namespace Celeste.Mod.Tetrahelper {
         }
 
         public override void Load() {
-            // TODO: apply any hooks that should always be active
+            DashMatchWallRenderer.Load();
         }
 
         public override void Unload() {
-            // TODO: unapply any hooks applied in Load()
+            DashMatchWallRenderer.Unload();
         }
     }
 }

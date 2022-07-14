@@ -53,7 +53,7 @@ namespace Celeste.Mod.TetraHelper.Entities
                     ParticleColor = Color.Red;
                     break;
                 case 2:
-                    ParticleColor = Color.Pink;
+                    ParticleColor = Color.DeepPink;
                     break;
 
             }
@@ -107,17 +107,21 @@ namespace Celeste.Mod.TetraHelper.Entities
         private void OnPlayer(Player player)
 
             {
-            OnKillEffects();
+            
             if (!player.Dead && player.StateMachine.State != Player.StCassetteFly)
                 {
                     if (!AllowGreater)
                     {
-                        if (!(player.Dashes == Amount)) { player.Die(Vector2.Zero); }
+                        if (!(player.Dashes == Amount)) { player.Die(Vector2.Zero);
+                        OnKillEffects();
+                    }
                     
                     }
                     else
                     {
-                        if (!(player.Dashes >= Amount)) { player.Die(Vector2.Zero); }
+                        if (!(player.Dashes >= Amount)) { player.Die(Vector2.Zero);
+                        OnKillEffects();
+                    }
                     }
                 }
             foreach (DashMatchWall item in adjacent)
