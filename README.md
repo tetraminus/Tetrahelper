@@ -4,8 +4,8 @@
 
 -- Entitys:
 
---- flag toggled water:
-a literal rip of SC2020s flag water, just there as a test.
+--- Dash Match Wall:
+can only pass through if you have a set amount of dashes.
 
 -- Triggers:
 
