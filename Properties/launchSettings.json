@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Tetrahelper": {
+      "commandName": "Executable",
+      "executablePath": "D:\\Program Files (x86)\\Steam\\steamapps\\common\\Celeste\\Celeste.exe",
+      "workingDirectory": "D:\\Program Files (x86)\\Steam\\steamapps\\common\\Celeste"
+    }
+  }
+}
