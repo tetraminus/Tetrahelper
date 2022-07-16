@@ -17,11 +17,11 @@ namespace Celeste.Mod.Tetrahelper {
         }
 
         public override void Load() {
-            DashMatchWallRenderer.Load();
+            //DashMatchWallRenderer.Load();
         }
 
         public override void Unload() {
-            DashMatchWallRenderer.Unload();
+            //DashMatchWallRenderer.Unload();
         }
     }
 }

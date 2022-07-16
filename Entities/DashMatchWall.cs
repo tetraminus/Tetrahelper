@@ -7,7 +7,18 @@ using System.Collections.Generic;
 namespace Celeste.Mod.TetraHelper.Entities
 
 {
+    public class Particle
+    {
+        public Vector2 position;
+        public Color Col;
+        public Particle(float X,float Y, Color color)
+        {
+            position.X = X;
+            position.Y = Y;
+            Col = color;
+        }
 
+    }
     [CustomEntity("TetraHelper/DashMatchWall")]
     [Tracked(false)]
     public class DashMatchWall : Entity
@@ -26,10 +37,11 @@ namespace Celeste.Mod.TetraHelper.Entities
 
         private float solidifyDelay;
 
-        private List<Vector2> particles = new List<Vector2>();
+        private List<Particle> particles = new List<Particle>();
 
         private float[] speeds = new float[6] { 12f, 20f, 40f, -12f, -20f, -40f };
-        public Color ParticleColor;
+        public Color BaseParticleColor;
+        public Color AltParticleColor;
 
         public DashMatchWall(EntityData data, Vector2 offset)
             : this(data.Position + offset, data.Width, data.Height, data.Int("dashes", 1), data.Bool("GT", false)) { }
@@ -37,34 +49,45 @@ namespace Celeste.Mod.TetraHelper.Entities
         public DashMatchWall(Vector2 position, int width, int height, int dashes, bool greaterthan)
             : base(position)
         {
-
-            for (int i = 0; (float)i < width * height / 16f; i++)
-            {
-                particles.Add(new Vector2(Calc.Random.NextFloat(width - 1f), Calc.Random.NextFloat(height - 1f)));
-            }
-
-            Depth = Depths.DreamBlocks - 1;
+            BaseParticleColor = GetParticleCol(dashes);
+            AltParticleColor = GetParticleCol(dashes+1);
+            Depth = Depths.CrystalSpinners - 1;
             AllowGreater = greaterthan;
             Amount = dashes;
-            switch (dashes)
+            for (int i = 0; (float)i < width * height / 16f; i++)
             {
-                case 0:
-                    ParticleColor = Color.LightBlue;
-                    break;
-                case 1:
-                    ParticleColor = Color.Red;
-                    break;
-                case 2:
-                    ParticleColor = Color.DeepPink;
-                    break;
-                default:
-                    ParticleColor = Color.Green;
-                    break;
-
+                particles.Add(new Particle(Calc.Random.NextFloat(width - 1f), Calc.Random.NextFloat(height - 1f), (((i%2 == 1) && AllowGreater)? AltParticleColor: BaseParticleColor)));
             }
+
+            
+           
+            
 
             Collider = new Hitbox(width, height);
             Add(new PlayerCollider(OnPlayer));
+        }
+        public Color GetParticleCol(int d)
+        {
+            if (SaveData.Instance != null && SaveData.Instance.Assists.PlayAsBadeline)
+            {
+                return d switch
+                {
+                    0 => Player.UsedBadelineHairColor,
+                    1 => Player.NormalBadelineHairColor,
+                    2 => Player.TwoDashesBadelineHairColor,
+                    _ => Color.Green,
+                };
+            }
+            else
+            {
+                return d switch
+                {
+                    0 => Player.UsedHairColor,
+                    1 => Player.NormalHairColor,
+                    2 => Player.TwoDashesHairColor,
+                    _ => Color.Green,
+                };
+            }
         }
         //public override void Added(Scene scene)
         //{
@@ -103,11 +126,11 @@ namespace Celeste.Mod.TetraHelper.Entities
             {
 
                 float speed = speeds[i % speeds.Length];
-                Vector2 value = particles[i];
+                Vector2 value = particles[i].position;
                 value.Y -= speed * Engine.DeltaTime;
                 if (value.Y <= 0){ value.Y = height - 2f; }
                 value.Y %= height -1f ;
-                 particles[i] = value;
+                 particles[i].position = value;
             }
             base.Update();
         }
@@ -156,16 +179,19 @@ namespace Celeste.Mod.TetraHelper.Entities
 
         public override void Render()
         {
-
             
-            foreach (Vector2 particle in particles)
+            
+            foreach (Particle particle in particles)
             {
-                Draw.Pixel.Draw(Position + particle, Vector2.Zero, ParticleColor);
+                if (AllowGreater) { }
+                Draw.Pixel.Draw(Position + particle.position, Vector2.Zero, particle.Col);
             }
             if (Flashing)
             {
-                Draw.Rect(base.Collider, ParticleColor * Flash * 0.5f);
+                Draw.Rect(base.Collider, BaseParticleColor * Calc.Max(Flash,0.35f) * 0.5f);
             }
+            else
+            { Draw.Rect(base.Collider, BaseParticleColor * 0.35f * 0.5f); }
             base.Render();
         }
     }
