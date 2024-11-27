@@ -1,7 +1,63 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
 <Sprites>
-    <sampleEntity path="objects/Tetrahelper/sampleEntity/" start="idle">
-        <Justify x="0.5" y="0.5" />
-        <Anim id="idle" path="idle" delay="0.1" frames="0" />
-    </sampleEntity>
+  <WhiteBerry path="collectables/WhiteBerry/" start="idle">
+    <Center />
+
+    <Loop id="idle" path="normal" delay=".1" frames="0-6,0-6,0-6,0-6,0-7" />
+    <Loop id="noFlash" path="normal" delay=".1" frames="0-6"/>
+    <Anim id="collect" path="normal" delay=".07" frames="7-11"/>
+    <Loop id="flap" path="wings" delay=".08" frames="0-8,0-8,0-7,9" />
+
+    <Anim id="fade0" path="normal" delay=".08" frames="12-14,14*10,15-19"/>
+    <Anim id="fade1" path="normal" delay=".07" frames="20-22,22*10,23-26"/>
+    <Anim id="fade2" path="normal" delay=".07" frames="28-30,30*10,31-34"/>
+    <Anim id="fade3" path="normal" delay=".07" frames="36-38,38*10,39-42"/>
+    <Anim id="fade4" path="normal" delay=".07" frames="44-46,46*10,47-50"/>
+    <Anim id="fade5" path="normal" delay=".07" frames="52,53,54,53,54,53,54,53,54,53,54,53,54-59"/>
+    <Anim id="fade_wow" path="wow/normal" delay=".1" frames="52-66"/>
+  </WhiteBerry>
+  
+  <MomentumMirrorTop path="objects/MomentumMirror/" start="MomentumMirror"> 
+    <Anim id="MomentumMirror" path="MMTop" frames="0*10" delay="0.08" goto="MomentumMirror,MomentumMirror,MomentumMirror,MomentumMirror,MomentumMirror,MomentumMirrorShine"/>
+    <Anim id="MomentumMirrorShine" path="MMTop" frames="0-4" delay="0.08" goto="MomentumMirror"/>
+  </MomentumMirrorTop>
+  <MomentumMirrorMid path="objects/MomentumMirror/" start="MomentumMirror">
+    
+    <Anim id="MomentumMirror" path="MMMid" frames="0*10" delay="0.08" goto="MomentumMirror,MomentumMirror,MomentumMirror,MomentumMirror,MomentumMirror,MomentumMirrorShine"/>
+    <Anim id="MomentumMirrorShine" path="MMMid" frames="0-4" delay="0.08" goto="MomentumMirror"/>
+  </MomentumMirrorMid>
+  <MomentumMirrorBottom path="objects/MomentumMirror/" start="MomentumMirror">
+    
+    <Anim id="MomentumMirror" path="MMBottom" frames="0*10" delay="0.08" goto="MomentumMirror,MomentumMirror,MomentumMirror,MomentumMirror,MomentumMirror,MomentumMirrorShine"/>
+    <Anim id="MomentumMirrorShine" path="MMBottom" frames="0-4" delay="0.08" goto="MomentumMirror"/>
+  </MomentumMirrorBottom>
+  
+  <PowerStation path="objects/PowerStation/" start="offIdle">
+  <Center/>
+    <Loop id="onIdle" path="PS_on_Idle_" delay=".5" frames="0-1" />
+    <Loop id="offIdle" path="PS_off_Idle_" delay=".5" frames="0" />
+    <Anim id="anim" path="PS_anim_" frames="0-17" delay="0.1" goto="onidle"/>
+  </PowerStation>
+
+  <FlingBooster path="objects/FlingBooster/" start="idle">
+    <Center/>
+    <Loop id="idle" path="FlingBoosterIdle" delay=".2" frames="0-6,5-1" />
+    <Anim id="Boost" path="FlingBoosterBoost" delay=".05" frames="0-7,7" goto="idle" />
+    <Loop id="upidle" path="FlingBoosterUpIdle" delay=".2" frames="0-6,5-1" />
+    <Anim id="upBoost" path="FlingBoosterUpBoost" delay=".05" frames="0-7,7" goto="upidle" />
+    
+  </FlingBooster>
+
+  <glueTop path="objects/glue/" start="hot">
+    <Loop id="hot" path="glueTop" frames="0" delay="0.035"/>
+  </glueTop>
+  <glueMid path="objects/glue/" start="hot">
+    <Loop id="hot" path="glueM" frames="0" delay="0.035"/>
+  </glueMid>
+  <glueBottom path="objects/glue/" start="hot">
+    <Loop id="hot" path="glueBot" frames="0" delay="0.035"/>
+  </glueBottom>
+  
+  
 </Sprites>

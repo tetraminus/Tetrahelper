@@ -1,0 +1,29 @@
+local drawableSprite = require("structs.drawable_sprite")
+local utils = require("utils")
+
+local PowerStation = {}
+
+PowerStation.name = "PowerStation"
+PowerStation.depth = 0
+PowerStation.justification = {0.25, 0.25}
+PowerStation.fieldInformation = {
+    
+}
+PowerStation.placements = {
+        name = "PowerStation (Tetrahelper)",
+        data = {
+           Flag = ""
+        }
+    }
+
+
+function PowerStation.sprite(room, entity)
+   
+    local sprite = drawableSprite.fromTexture("objects/door/lockdoorTempleA00", entity)
+
+    sprite:addPosition(16, 16)
+
+    return sprite
+end
+
+return PowerStation

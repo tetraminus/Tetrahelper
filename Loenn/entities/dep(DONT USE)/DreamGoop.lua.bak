@@ -1,0 +1,81 @@
+local utils = require("utils")
+local drawableRectangle = require("structs.drawable_rectangle")
+local drawableSprite = require("structs.drawable_sprite")
+
+
+
+local function createHandler(name, dir)
+    local horizontal = dir == "up" or dir == "down"
+
+    local handler = {}
+
+    handler.name = name
+    handler.depth = -1
+    handler.canResize = {horizontal, not horizontal}
+
+    local minWidth, minHeight = horizontal and 16 or 8, horizontal and 8 or 16
+
+    handler.minimumSize = {minWidth, minHeight}
+
+    handler.placements = {
+        {
+            name = handler.name,
+            data = {
+                width = minWidth,
+                height = minHeight
+            }
+        }
+    }
+    
+    function handler.sprite(room, entity)
+        local sprites = {}
+                
+        local texture = "Objects/DreamGoop/dreamgoop_up00"
+        local horizontal = dir == "up" or dir == "down"
+        local baseOffsetX = dir == "left" and -3 or 5
+        local baseOffsetY = dir == "up" and -3 or 5
+        
+        local baseColor = entity.startActive and fillColor or fillColorInactive
+        local fill = drawableRectangle.fromRectangle("fill", handler.selection(room, entity), baseColor)
+        table.insert(sprites, fill)
+                
+        for i = 0,1 do
+            local spikeSprite = drawableSprite.fromTexture(texture, entity)
+            spikeSprite.x += baseOffsetX + (horizontal and i * (entity.width - 10) or 0)
+            spikeSprite.y += baseOffsetY + (horizontal and 0 or i * (entity.height - 10))
+            table.insert(sprites, spikeSprite)
+        end
+        
+        local edgeColor = entity.startActive and borderColor or borderColorInactive
+        local line = drawableRectangle.fromRectangle("line", handler.selection(room, entity), edgeColor)
+        table.insert(sprites, line)
+                       
+        return sprites
+    end
+    
+    function handler.selection(room, entity)
+        if dir == "up" then
+            return utils.rectangle(entity.x, entity.y - 6, entity.width, 8)
+        elseif dir == "down" then
+            return utils.rectangle(entity.x, entity.y, entity.width, 8)
+        elseif dir == "left" then
+            return utils.rectangle(entity.x - 6, entity.y, 8, entity.height)
+        elseif dir == "right" then
+            return utils.rectangle(entity.x, entity.y, 8, entity.height)
+        end
+    end
+
+    return handler
+end
+
+local spikeUp = createHandler("Tetrahelper/DreamGoopUp", "up")
+local spikeDown = createHandler("Tetrahelper/DreamGoopDown", "down")
+local spikeLeft = createHandler("Tetrahelper/DreamGoopLeft", "left")
+local spikeRight = createHandler("Tetrahelper/DreamGoopRight", "right")
+
+return {
+    spikeUp,
+    spikeDown,
+    spikeLeft,
+    spikeRight
+}

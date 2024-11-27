@@ -1,6 +1,6 @@
 - Name: Tetrahelper
   Version: 0.1.0
-  DLL: bin/Tetrahelper.dll
+  DLL: Code/net452/Tetrahelper.dll
   Dependencies:
     - Name: Everest
-      Version: 1.2781.0
+      Version: 1.3396.0

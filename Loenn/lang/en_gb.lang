@@ -1,0 +1,7 @@
+# Sample Entity
+entities.Tetrahelper/SampleEntity.placements.name.normal=Sample Entity (Tetrahelper)
+entities.Tetrahelper/SampleEntity.attributes.description.sampleProperty=A sample property for your entity.
+
+# Sample Trigger
+triggers.Tetrahelper/SampleTrigger.placements.name.normal=Sample Trigger (Tetrahelper)
+triggers.Tetrahelper/SampleTrigger.attributes.description.sampleProperty=A sample property for your trigger.
