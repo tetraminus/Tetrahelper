@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
@@ -40,7 +41,7 @@ internal class PowerStation : Entity
         Add(sprite = GFX.SpriteBank.Create("PowerStation"));
         Add(new PlayerCollider(OnPlayer, new Circle(40f)));
         sprite.Play("offIdle");
-
+        
         Depth = 1965;
         unlockSfxName = "event:/game/05_mirror_temple/key_unlock_dark";
         Flag = data.Attr("Flag", "PowerFlag");
@@ -65,7 +66,7 @@ internal class PowerStation : Entity
     private void OnPlayer(Player player)
     {
         var level = SceneAs<Level>();
-
+        
         if (!opening && !level.Session.GetFlag(Flag))
             foreach (var follower in player.Leader.Followers)
                 if (follower.Entity is Key && !(follower.Entity as Key).StartedUsing)

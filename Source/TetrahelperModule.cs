@@ -30,6 +30,7 @@ public class TetrahelperModule : EverestModule {
     {
         On.Celeste.Solid.HasPlayerRider += Solid_HasPlayerRider;
         Glue.Load();
+        CrossRoomDreamBlock.ApplyIlHooks();
     }
 
 
@@ -37,6 +38,7 @@ public class TetrahelperModule : EverestModule {
     {
         On.Celeste.Solid.HasPlayerRider -= Solid_HasPlayerRider;
         Glue.Unload();
+        CrossRoomDreamBlock.UnapplyIlHooks();
     }
 
     private static bool Solid_HasPlayerRider(On.Celeste.Solid.orig_HasPlayerRider orig, Solid self)

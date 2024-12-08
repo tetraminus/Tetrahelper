@@ -89,18 +89,34 @@ namespace Celeste.Mod.TetraHelper.Entities
                 };
             }
         }
-        //public override void Added(Scene scene)
-        //{
-        //    base.Added(scene);
-        //    scene.Tracker.GetEntity<DashMatchWallRenderer>().Track(this);
-        //}
-
-        //public override void Removed(Scene scene)
-        //{
-        //    base.Removed(scene);
-        //    scene.Tracker.GetEntity<DashMatchWallRenderer>().Untrack(this);
-        //}
-
+        private void WobbleLine(Vector2 from, Vector2 to, float offset)
+        {
+            float num1 = (to - from).Length();
+            Vector2 vector2_1 = Vector2.Normalize(to - from);
+            Vector2 vector2_2 = new Vector2(vector2_1.Y, -vector2_1.X);
+            Color color1 = this.playerHasDreamDash ? DreamBlock.activeLineColor : DreamBlock.disabledLineColor;
+            Color color2 = this.playerHasDreamDash ? DreamBlock.activeBackColor : DreamBlock.disabledBackColor;
+            if ((double) this.whiteFill > 0.0)
+            {
+                color1 = Color.Lerp(color1, Color.White, this.whiteFill);
+                color2 = Color.Lerp(color2, Color.White, this.whiteFill);
+            }
+            float num2 = 0.0f;
+            int val1 = 16;
+            for (int index = 2; (double) index < (double) num1 - 2.0; index += val1)
+            {
+                float num3 = this.Lerp(this.LineAmplitude(this.wobbleFrom + offset, (float) index), this.LineAmplitude(this.wobbleTo + offset, (float) index), this.wobbleEase);
+                if ((double) (index + val1) >= (double) num1)
+                    num3 = 0.0f;
+                float num4 = Math.Min((float) val1, num1 - 2f - (float) index);
+                Vector2 start = from + vector2_1 * (float) index + vector2_2 * num2;
+                Vector2 end = from + vector2_1 * ((float) index + num4) + vector2_2 * num3;
+                Draw.Line(start - vector2_2, end - vector2_2, color2);
+                Draw.Line(start - vector2_2 * 2f, end - vector2_2 * 2f, color2);
+                Draw.Line(start, end, color1);
+                num2 = num3;
+            }
+        }
         public override void Update()
         {
             if (Flashing)

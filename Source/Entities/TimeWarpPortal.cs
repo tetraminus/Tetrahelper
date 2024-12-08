@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Celeste.Mod.Entities;
+using Celeste.Mod.Tetrahelper.helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Monocle;
@@ -11,8 +12,6 @@ namespace Celeste.Mod.Tetrahelper.Entities;
 [CustomEntity("Tetrahelper/TimeWarpPortal")]
 public class TimeWarpPortal : Entity
 {
-    // Token: 0x040020B0 RID: 8368
-    public static ParticleType P_CurtainDrop;
     private readonly string onFlag;
 
     private readonly int particlerange = 64;
@@ -61,6 +60,7 @@ public class TimeWarpPortal : Entity
     private int switchCounter;
 
     private Texture2D tex;
+    
 
     public TimeWarpPortal(EntityData data, Vector2 offset) : base(data.Position + offset)
     {
@@ -119,7 +119,8 @@ public class TimeWarpPortal : Entity
     {
     }
 
-
+    
+    
     // this is only possible because of horizon_wings#4385 on the celeste discord
     private void BeforeRender()
     {
@@ -128,12 +129,16 @@ public class TimeWarpPortal : Entity
         var position = new Vector2(StencilMaker.GetStencilTexture().Width, StencilMaker.GetStencilTexture().Height) /
                        2f;
         var mtexture = GFX.Game["objects/temple/portal/portal"];
-
+        
         StencilMaker.StartMask();
-        GFX.Game["objects/common/warpportal/mask"]
-            .DrawCentered(position, MultAlpha(Color.DarkBlue, .1f), new Vector2(1.5f));
+        // GFX.Game["objects/common/warpportal/mask"]
+        //     .DrawCentered(position, MultAlpha(Color.DarkBlue, .1f), new Vector2(1.5f));
+    
+        CircleShape.RawDraw(position, 26, Color.Transparent, 0f);
+        
         StencilMaker.EndMask();
         StencilMaker.StartContent();
+        
         var num = 0;
         while (num < 10f)
         {
@@ -145,7 +150,7 @@ public class TimeWarpPortal : Entity
             mtexture.DrawCentered(position, color, scale, rotation);
             num++;
         }
-
+        
         StencilMaker.EndContent();
         StencilMaker.SwapFromStencilTarget();
     }
@@ -163,15 +168,15 @@ public class TimeWarpPortal : Entity
     public override void Render()
     {
         base.Render();
-
+        
         if (StencilMaker.GetStencilTexture() != null && Activated())
         {
             var tex = StencilMaker.GetStencilTexture();
-            Draw.SpriteBatch.Draw(tex, Position - new Vector2(tex.Width / 2, tex.Height / 2),
-                Color.White * bufferAlpha);
+            Draw.SpriteBatch.Draw(tex, Position - new Vector2(tex.Width / 2, tex.Height / 2),Color.White * bufferAlpha);
         }
 
         GFX.Game["objects/common/warpportal/frame"].DrawCentered(Position);
+        
         foreach (var p in particles)
         {
             if (Vector2.Distance(p.pos, Position) <= 2)
@@ -195,6 +200,9 @@ public class TimeWarpPortal : Entity
 
             if (Activated()) p.Render();
         }
+        
+        
+        
     }
 
     // Token: 0x06002706 RID: 9990 RVA: 0x000D9BC9 File Offset: 0x000D7DC9
